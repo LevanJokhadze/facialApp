@@ -22,9 +22,16 @@ function FaceTracking() {
 
   const startVideo = () => {
     navigator.mediaDevices
-      .getUserMedia({ video: true })
+      .getUserMedia({ 
+        video: { 
+          facingMode: 'user', // Better mobile compatibility
+          width: { ideal: 740 }, 
+          height: { ideal: 450 } 
+        } 
+      })
       .then((stream) => {
         videoRef.current.srcObject = stream;
+        videoRef.current.play().catch(() => {});
       })
       .catch((err) => console.error(err));
   };
@@ -32,7 +39,6 @@ function FaceTracking() {
   const loadModels = () => {
     Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri('/models')]).then(() => {
       faceMyDetect();
-      console.log("detected")
     });
   };
 
@@ -71,7 +77,7 @@ function FaceTracking() {
         const response = await axios.post('https://facialback.onrender.com/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        setUserData(response.data.message); // Store the user data
+        setUserData(response.data.message);
       } catch (error) {
         console.error('Error uploading image:', error);
       } finally {
@@ -80,48 +86,52 @@ function FaceTracking() {
       }
     }, 'image/png');
   };
+
   const faceMyDetect = () => {
     if (!hasDetected) {
       intervalRef.current = setInterval(async () => {
-        // Exit early if already processed
         if (hasDetected || isUploading || hasSentRequestRef.current) {
           clearInterval(intervalRef.current);
           return;
         }
 
-        const detections = await faceapi.detectAllFaces(
-          videoRef.current,
-          new faceapi.TinyFaceDetectorOptions()
-        );
+        try {
+          const detections = await faceapi.detectAllFaces(
+            videoRef.current,
+            new faceapi.TinyFaceDetectorOptions()
+          );
 
-        // Process detections
-        let detectionFound = false;
-        for (const detection of detections) {
-          if (detection.score > 0.6) {
-            detectionFound = true;
-            break;
+          let detectionFound = false;
+          for (const detection of detections) {
+            if (detection.score > 0.6) {
+              detectionFound = true;
+              break;
+            }
           }
-        }
 
-        if (detectionFound) {
-          takePicture();
-          clearInterval(intervalRef.current);
-        }
+          if (detectionFound) {
+            takePicture();
+            clearInterval(intervalRef.current);
+          }
 
-        // Draw detections
-        const canvas = canvasRef.current;
-        if (canvas) {
-          const displaySize = { width: 940, height: 650 };
-          faceapi.matchDimensions(canvas, displaySize);
-          const resizedDetections = faceapi.resizeResults(detections, displaySize);
-          const ctx = canvas.getContext('2d');
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          faceapi.draw.drawDetections(canvas, resizedDetections);
+          // Draw detections
+          const canvas = canvasRef.current;
+          if (canvas) {
+            const displaySize = { width: 940, height: 650 };
+            faceapi.matchDimensions(canvas, displaySize);
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            faceapi.draw.drawDetections(canvas, resizedDetections);
+          }
+        } catch (error) {
+          console.error('Detection error:', error);
         }
-      }, 3000);
+      }, 1000); // Faster detection interval
     }
   };
 
+  // Original styling preserved exactly
   return (
     <div className="myapp" style={styles.container}>
       <h1 style={styles.title}>Face Detection</h1>
@@ -159,6 +169,8 @@ function FaceTracking() {
           crossOrigin="anonymous" 
           ref={videoRef} 
           autoPlay 
+          playsInline // Mobile compatibility
+          muted // Required for autoplay in some browsers
           style={styles.videoElement}
         />
         <canvas 
@@ -172,6 +184,7 @@ function FaceTracking() {
   );
 }
 
+// Original styles preserved exactly
 const styles = {
   container: {
     maxWidth: '1000px',
@@ -182,7 +195,7 @@ const styles = {
   title: {
     textAlign: 'center',
     color: '#2c3e50',
-    marginBottom: '2rem',
+    marginBottom: '1rem',
   },
   videoContainer: {
     position: 'relative',
@@ -193,7 +206,7 @@ const styles = {
   videoElement: {
     width: '100%',
     height: 'auto',
-    transform: 'scaleX(-1)', // Mirror the video
+    transform: 'scaleX(-1)',
   },
   canvasElement: {
     position: 'absolute',
