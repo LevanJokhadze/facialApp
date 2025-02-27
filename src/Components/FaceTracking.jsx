@@ -32,6 +32,7 @@ function FaceTracking() {
   const loadModels = () => {
     Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri('/models')]).then(() => {
       faceMyDetect();
+      console.log("detected")
     });
   };
 
