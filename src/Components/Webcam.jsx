@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
+import "./web.css";
 
 function CameraCapture() {
   const webcamRef = useRef(null);
@@ -74,7 +75,7 @@ function CameraCapture() {
           <Webcam ref={webcamRef} screenshotFormat="image/jpeg" className="rounded-md shadow-md" />
           <button
             onClick={capture}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className="submit"
           >
             Capture Photo
           </button>
@@ -88,7 +89,7 @@ function CameraCapture() {
           />
           <button
             onClick={handleUpload}
-            className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md"
+            className="submit"
           >
             Upload Photo
           </button>
