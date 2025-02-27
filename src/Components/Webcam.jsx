@@ -68,6 +68,7 @@ function CameraCapture() {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.error(response);
       setMessage(`Image uploaded successfully!`);
     } catch (error) {
       setMessage('Error uploading image.');
