@@ -35,7 +35,7 @@ function CameraCapture() {
     formData.append('age', age);
 
       // Send the image and additional data to the Flask server
-      const response = await axios.post('http://127.0.0.1:5000/upload', formData, {
+      const response = await axios.post('https://facialback.onrender.com/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
