@@ -68,8 +68,9 @@ function CameraCapture() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.error(response);
-      setMessage(`Image uploaded successfully!`);
+      const { name, last_name } = response.data.message;
+      setMessage(`Name: ${name}, Last Name: ${last_name}`);
+      console.log(response.data)
     } catch (error) {
       setMessage('Error uploading image.');
       console.error(error);
