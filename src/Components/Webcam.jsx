@@ -104,8 +104,7 @@ function CameraCapture() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      const { name, last_name } = response.data.message;
-      setMessage(`Name: ${name}, Last Name: ${last_name}`);
+      setMessage(`Uploaded Succesfully`);
     } catch (error) {
       setMessage('Error saving data.');
       console.error(error);
