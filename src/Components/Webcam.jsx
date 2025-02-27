@@ -61,20 +61,19 @@ function CameraCapture() {
     const blob = await fetch(image).then(res => res.blob());
     formData.append('file', blob, 'captured-image.jpg');
 
-    try {
       // Send only the image to the Flask server
       const response = await axios.post('https://facialback.onrender.com/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      const { name, last_name } = response.data.message;
-      setMessage(`Name: ${name}, Last Name: ${last_name}`);
-      console.log(response.data)
-    } catch (error) {
-      setMessage('Error uploading image.');
-      console.error(error);
-    }
+
+      if (response.data.status === "success") {
+        const { name, last_name } = response.data.message;
+        setMessage(`Name: ${name}, Last Name: ${last_name}`);
+      } else {
+        setMessage(`Error: ${response.data.error}`);
+      }
   };
 
   // Handle sending the selected file and additional data to the Flask server (Save tab)
