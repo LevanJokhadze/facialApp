@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Cards.scss';
 
-export const Card = ({ message, user_name, room_number, timestamp, priority = 'medium' }) => {
+export const Card = ({ message, user_name, room_number, function_name, timestamp, priority = 'medium' }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleting2, setIsDeleting2] = useState(false);
@@ -37,6 +37,7 @@ export const Card = ({ message, user_name, room_number, timestamp, priority = 'm
         <div className="task-card__info">
           <p className="task-card__user-name">User: {user_name}</p>
           <p className="task-card__room-number">Room: {room_number}</p>
+          <p className="task-card__room-number">Function: {function_name}</p>
           <p className="task-card__timestamp">Time: {new Date(timestamp).toLocaleString()}</p>
         </div>
         <div className="task-card__actions">
