@@ -6,7 +6,7 @@ const SSEComponent = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      fetch("http://127.0.0.1:5000/get-tasks")
+      fetch("https://octopus-app-hlj7o.ondigitalocean.app/get-tasks")
         .then((response) => response.json())
         .then((data) => setTasks(data))
         .catch((error) => console.error("Error fetching initial tasks:", error));
