@@ -1,0 +1,329 @@
+// iPhone 14 specific sizing and modern design
+$iphone-14-width: 390px;
+$iphone-14-height: 844px;
+
+// Vibrant color palette
+$colors: (
+  background: #f0f4f8,
+  text-primary: #1a2b3c,
+  text-secondary: #4a5568,
+  primary: #007aff,
+  secondary: #34c759,
+  danger: #ff3b30,
+  low-priority: #5856d6,
+  medium-priority: #ff9500,
+  high-priority: #ff3b30
+);
+
+// Keyframe animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes deleteAnimation {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) rotate(5deg);
+  }
+}
+
+@keyframes backgroundPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+.task-card {
+  position: relative;
+  width: 100%;
+  max-width: $iphone-14-width - 40px; // Account for margins
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
+  
+  // Background layer with subtle animation
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(255,255,255,0.8), 
+      rgba(240,244,248,0.9)
+    );
+    animation: backgroundPulse 5s infinite;
+    z-index: 1;
+  }
+
+  // Content positioning
+  &__content {
+    position: relative;
+    z-index: 2;
+    padding: 25px;
+    background: transparent;
+  }
+
+  // Deletion animation
+  &--deleting {
+    animation: deleteAnimation 0.5s forwards;
+  }
+
+  // Completed state
+  &--completed {
+    opacity: 0.6;
+
+    .task-card__title {
+      text-decoration: line-through;
+    }
+  }
+
+  // Priority styling
+  &--low-priority {
+    .task-card__priority-badge {
+      background-color: map-get($colors, low-priority);
+    }
+  }
+
+  &--medium-priority {
+    .task-card__priority-badge {
+      background-color: map-get($colors, medium-priority);
+    }
+  }
+
+  &--high-priority {
+    .task-card__priority-badge {
+      background-color: map-get($colors, high-priority);
+    }
+  }
+
+  // Header styling
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: map-get($colors, text-primary);
+    margin: 0;
+  }
+
+  &__priority-badge {
+    font-size: 12px;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__date {
+    color: map-get($colors, text-secondary);
+    margin-bottom: 20px;
+  }
+
+  // Action buttons
+  &__actions {
+    display: flex;
+    gap: 15px;
+  }
+
+  &__complete-btn,
+  &__delete-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__complete-btn {
+    background-color: map-get($colors, primary);
+    color: white;
+  }
+
+  &__delete-btn {
+    background-color: rgba(map-get($colors, danger), 0.1);
+    color: map-get($colors, danger);
+  }
+
+  // Responsive adjustments
+  @media (max-width: $iphone-14-width) {
+    max-width: 100%;
+    margin: 15px 10px;
+  }
+}
+
+.none {
+    display: none;
+}
+
+.task-card {
+  position: relative;
+  width: 100%;
+  max-width: $iphone-14-width - 40px; // Account for margins
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
+
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(240,244,248,0.9));
+    animation: backgroundPulse 5s infinite;
+    z-index: 1;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    padding: 25px;
+    background: transparent;
+  }
+
+  &--deleting {
+    animation: deleteAnimation 0.5s forwards;
+  }
+
+  &--completed {
+    opacity: 0.6;
+    .task-card__title {
+      text-decoration: line-through;
+    }
+  }
+
+  &--low-priority {
+    .task-card__priority-badge {
+      background-color: map-get($colors, low-priority);
+    }
+  }
+
+  &--medium-priority {
+    .task-card__priority-badge {
+      background-color: map-get($colors, medium-priority);
+    }
+  }
+
+  &--high-priority {
+    .task-card__priority-badge {
+      background-color: map-get($colors, high-priority);
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: map-get($colors, text-primary);
+    margin: 0;
+  }
+
+  &__priority-badge {
+    font-size: 12px;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__info {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: map-get($colors, text-secondary);
+
+    .task-card__user-name,
+    .task-card__room-number,
+    .task-card__timestamp {
+      margin: 5px 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 15px;
+  }
+
+  &__complete-btn,
+  &__delete-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__complete-btn {
+    background-color: map-get($colors, primary);
+    color: white;
+  }
+
+  &__delete-btn {
+    background-color: rgba(map-get($colors, danger), 0.1);
+    color: map-get($colors, danger);
+  }
+
+  @media (max-width: $iphone-14-width) {
+    max-width: 100%;
+    margin: 15px 10px;
+  }
+}
+
+.none {
+  display: none;
+}
